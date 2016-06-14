@@ -3,8 +3,9 @@ using System.Collections;
 
 public class Slingshot : MonoBehaviour {
 
+	static public Slingshot S;
 	public GameObject		prefabProjectile;
-	public float velocityMult = 4f;
+	public float 			velocityMult = 4f;
 	public bool				___________________________;
 	public GameObject		launchPoint;
 	public Vector3			launchPos;
@@ -12,13 +13,14 @@ public class Slingshot : MonoBehaviour {
 	public bool				aimingMode;
 
 	void Awake(){
+		S = this;
 		Transform launchPointTrans = transform.Find ("LaunchPoint");
 		launchPoint = launchPointTrans.gameObject;
 		launchPoint.SetActive (false);
 		launchPos = launchPointTrans.position;
 	}
 	void Update(){
-		if (!aimingMode)
+		if (!aimingMode) 
 			return;
 		Vector3 mousePos2D = Input.mousePosition;
 		mousePos2D.z = -Camera.main.transform.position.z;
@@ -38,6 +40,7 @@ public class Slingshot : MonoBehaviour {
 			aimingMode = false;
 			projectile.rigidbody.isKinematic = false;
 			projectile.rigidbody.velocity = -mouseDelta * velocityMult;
+			FollowCam.S.poi = projectile;
 			projectile = null;
 		}
 	}
